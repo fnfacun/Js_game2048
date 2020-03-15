@@ -1,0 +1,117 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+}
+.game{
+    width: 100%;
+    height: 100%;
+    background: #bfbfff url(../img/body_bg.gif) repeat-x center 90%;
+    padding-top: 100px;
+    box-sizing: border-box;
+}
+.wrap{
+    width: 320px;
+    height: 436px;
+    background: url(../img/bg.png) no-repeat center center;
+    margin: 0 auto;
+    position: relative;
+}
+.scroe{
+    position: absolute;
+    width: 262px;
+    height: 185px;
+    left: -90px;
+    top: -80px;
+    background: url(../img/scroe.png) no-repeat center center;
+    pointer-events: none;
+}
+.scroe .scroeNum{
+    color: #fff;
+    font-size: 30px;
+    position: absolute;
+    right: 110px;
+    top:5px;
+    left:0px;
+    text-align:right;
+}
+.con{
+    height: 100%;
+}
+.con div{
+    width: 80px;
+    height: 109px;
+    float: left;
+}
+.con div img{
+    width: 100%;
+    height: 100%;
+    border: none
+}
+.reset{
+    outline:none;
+    width:80px;
+    height:30px;
+    background:#fff;
+    border:none;
+    margin:20px auto;
+    display:block;
+    cursor: pointer;
+    transition:0.6s;
+    border-radius:10px;
+}
+.reset:active{
+    background:rgba(0,0,0,0.2);
+}
+
+#mask {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    border-radius: 10px;
+    opacity: .1;
+    position: absolute;
+    top: 0px;
+    display: none;
+}
+
+#jump {
+    width: 260px;
+    height: 180px;
+    background-color: pink;
+    box-shadow: inset 0 0 8px powderblue;
+    position: absolute;
+    top: 150px;
+    left: 30px;
+    border-radius: 10px;
+    display: none;
+}
+
+#jump p {
+    line-height: 180px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+#jump button {
+    position: absolute;
+    bottom: 20px;
+    padding: 4px;
+    color: white;
+    background-color: slateblue;
+    opacity: .8;
+    border: none;
+    font-size: 12px;
+    border-radius: 4px;
+    left: calc(50% - 30px);
+}
+#jump button:hover {
+    cursor: pointer;
+    background-color: slateblue;
+    opacity: 1;
+}
