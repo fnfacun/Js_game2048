@@ -131,12 +131,21 @@ function run(arr){
         Number(imgs[arr[2]].getAttribute('value')),
         Number(imgs[arr[3]].getAttribute('value')),
     ]);
+
     for(let i = 0; i < arr.length; i++){
         imgs[arr[i]].setAttribute('value', newValue[i]);
         imgs[arr[i]].src = `./img/cube_${newValue[i]}.png`;
     };
 
     // 分数统计
+    total();
+
+    // 判断游戏结束
+    isGameOver(newValue);
+};
+
+// 分数统计
+function total(){
     let total = 2;
     imgs.forEach(item=>{
         if(item.getAttribute("value")){
@@ -150,6 +159,11 @@ function run(arr){
         };
     });
     scroeNum.innerHTML = total;
+};
+
+// 判断游戏结束
+function isGameOver(newValue){
+    let now = newValue;
 };
 
 // 重置游戏
