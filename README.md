@@ -18,8 +18,6 @@
   - 2048.html
 
 ## 项目主要逻辑实现
-![](D:\web note\project\js_game2048\img\readme1.png)
-
 - 创建一个数组，设置指针 i，默认为 0。
 - 获取 i 的值
   - 如果 i 的值为空，i++ 进入下一轮
