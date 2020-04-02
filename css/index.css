@@ -127,7 +127,35 @@ html,body{
 }
 
 /* ---------------------------------------- alert ------------------------------------------------- */
-
+.gameover {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+    height: 160px;
+    background-color: rgba(0,0,0,0.8);
+    border-radius: 10px;
+    display: none;
+}
+.gameover p {
+    text-align: center;
+    color: white;
+    line-height: 100px;
+}
+.gameover button {
+    width: 60px;
+    border: none;
+    height: 30px;
+    cursor: pointer;
+    background-color: firebrick;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    left: calc(50% - 30px);
+}
+.gameover button:hover {
+    background-color: rgb(15, 94, 15);
+}
 .alert {
     position: absolute;
     top: 30%;

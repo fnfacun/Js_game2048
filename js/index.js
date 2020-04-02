@@ -30,40 +30,55 @@ let mask = document.querySelector("#mask");
 let scroeNum = document.querySelector('.scroeNum');
 let jump = document.querySelector('#jump');
 let jumpBtn = jump.querySelector("button");
+let gameOverAlert = document.querySelector(".gameover");
+let gameoverBtn = gameOverAlert.querySelector("button");
+
+let oldValue = [];
+let isCreateValue = true;
+let first = 0; // 重置分数
 
 // 键盘事件
 window.addEventListener("keydown",keyDown);
 
-function keyDown(e){
-    if(e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40){
-        switch(e.keyCode){
-            case 37:
-                run([0, 1, 2, 3]);
-                run([4, 5, 6, 7]);
-                run([8, 9, 10, 11]);
-                run([12, 13, 14, 15]);
-                break;
-            case 38:
-                run([0, 4, 8, 12]);
-                run([1, 5, 9, 13]);
-                run([2, 6, 10, 14]);
-                run([3, 7, 11, 15]);
-                break;
-            case 39:
-                run([3, 2, 1, 0]);
-                run([7, 6, 5, 4]);
-                run([11, 10, 9, 8]);
-                run([15, 14, 13, 12]);
-                break;
-            case 40:
-                run([12, 8, 4, 0]);
-                run([13, 9, 5, 1]);
-                run([14, 10, 6, 2]);
-                run([15, 11, 7, 3]);
-                break; 
-        };
-        createValue();
+function keyDown(e) {
+    if (e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40) {
+        return;
     };
+    oldValue = [];
+    switch (e.keyCode) {
+        case 37:
+            run([0, 1, 2, 3]);
+            run([4, 5, 6, 7]);
+            run([8, 9, 10, 11]);
+            run([12, 13, 14, 15]);
+            break;
+        case 38:
+            run([0, 4, 8, 12]);
+            run([1, 5, 9, 13]);
+            run([2, 6, 10, 14]);
+            run([3, 7, 11, 15]);
+            break;
+        case 39:
+            run([3, 2, 1, 0]);
+            run([7, 6, 5, 4]);
+            run([11, 10, 9, 8]);
+            run([15, 14, 13, 12]);
+            break;
+        case 40:
+            run([12, 8, 4, 0]);
+            run([13, 9, 5, 1]);
+            run([14, 10, 6, 2]);
+            run([15, 11, 7, 3]);
+            break;
+    };
+    createValue();
+    if (isGameOver()) {
+        gameOverAlert.style.display = 'block';
+        mask.style.display = 'block'
+        gameOverAlert.classList.add("alert-active");
+        isCreateValue = false;
+        window.removeEventListener('keydown', keyDown);
+    }
 };
 
 // window 一上来时生成
@@ -81,14 +96,16 @@ function init(){
 }
 
 // 随机生成
-function createValue(){
+async function createValue(){
     let rondom = Math.floor(Math.random() * imgs.length);
     if(imgs[rondom].getAttribute('value') == 0){
         // 如果当前位置为 0 
         imgs[rondom].setAttribute('value', 2);
         imgs[rondom].src = `./img/cube_2.png`;
     } else {
-        setTimeout(createValue, 20);
+        if(isCreateValue){
+            setTimeout(createValue, 20);
+        }
     };
 };
 
@@ -140,8 +157,8 @@ function run(arr){
     // 分数统计
     total();
 
-    // 判断游戏结束
-    isGameOver(newValue);
+    // 转存上一次 value
+    oldValue.push(newValue);
 };
 
 // 分数统计
@@ -162,8 +179,23 @@ function total(){
 };
 
 // 判断游戏结束
-function isGameOver(newValue){
-    let now = newValue;
+function isGameOver() {
+    // 遍历数组
+    for (var r = 0; r < oldValue.length; r++) {
+        for (var c = 0; c < oldValue[r].length; c++) {
+            if (oldValue[r][c] == 0) {
+                // 当数组中有0是，输出 false
+                return false;
+            }; 
+            if ((c < 3) && (oldValue[r][c] == oldValue[r][c + 1])) {   //当 0~2 列与 1~3 列分别比较
+                return false;
+            }
+            if ((r < 3) && (oldValue[r][c] == oldValue[r + 1][c])) {//当 0~2 行与 1~3 行分别比较，
+                return false;
+            }
+        }	//如果全部不满足则输出ture，输出的结果用于判断结束弹框弹出
+    }
+    return true;
 };
 
 // 重置游戏
@@ -174,10 +206,25 @@ function resetGame(){
     });
 };
 
-let first = 0; // 重置分数
+// 游戏结束重新开始按钮
+gameoverBtn.addEventListener("click",function(){
+    gameOverAlert.style.display = 'none';
+    mask.style.display = 'none';
+    // 重新游戏
+    resetGame();
+    // 初始化棋子
+    init();
+    // 重置分数
+    scroeNum.innerHTML = first;
+    // 重新执行事件
+    window.addEventListener('keydown', keyDown);
+    // 开始创建
+    isCreateValue = true;
+});
+
 
 // 重新开始点击时
-reset.addEventListener("click",function(e){
+reset.addEventListener("click",function(){
     // 显示弹窗
     resetAlart.style.display = 'block';
     // 卸载键盘事件
@@ -186,6 +233,7 @@ reset.addEventListener("click",function(e){
     };
     mask.style.display = 'block';   // 遮罩层
     resetAlart.classList.add("alert-acitive");  // 显示弹窗动画
+    isCreateValue = true;
 });
 
 // 完成 2048 小游戏后的重新开始的按钮
@@ -200,6 +248,7 @@ jumpBtn.addEventListener("click",function(){
     scroeNum.innerHTML = first;
     // 重新执行事件
     window.addEventListener('keydown', keyDown);
+    isCreateValue = true;
 });
 
 // 弹窗组件
@@ -216,6 +265,7 @@ resetAlart.addEventListener("click",function(e){
         init();
         // 重新执行事件
         window.addEventListener('keydown', keyDown);
+        isCreateValue = true;
     } else if(e.target.classList.contains('no')) {
         // 关闭弹窗、遮罩
         resetAlart.style.display = 'none';
